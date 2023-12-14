@@ -1,8 +1,13 @@
 ---
 layout: workshop      # DON'T CHANGE THIS.
-root: .               # DON'T CHANGE THIS EITHER.  (THANK YOU.)
+root: .               # DON'T CHANGE THIS EITHER.
+curriculum: "Instructor Training" # DON'T CHANGE THIS EITHER. (THANK YOU.)
+venue: "FIXME"        # brief name of the institution that hosts the workshop without address (e.g., "Euphoric State University")
+address: "FIXME"      # full street address of workshop (e.g., "Room A, 123 Forth Street, Blimingen, Euphoria"), videoconferencing URL, or 'online'
 country: "au"      # lowercase two-letter ISO country code such as "fr" (see https://en.wikipedia.org/wiki/ISO_3166-1)
 language: "en"     # lowercase two-letter ISO language code such as "fr" (see https://en.wikipedia.org/wiki/ISO_639-1)
+latitude: ""        # decimal latitude of training venue (use https://www.latlong.net/)
+longitude: ""       # decimal longitude of the training venue (use https://www.latlong.net)
 humandate: "December 7-10, 2021"    # human-readable dates for the workshop (e.g., "Feb 17-18, 2020")
 humantime: "9:00am to 1:00pm AEDT each day"    # human-readable times for the workshop (e.g., "9:00 am - 4:30 pm")
 startdate: 2021-12-07      # machine-readable start date for the workshop in YYYY-MM-DD format like 2015-01-01
@@ -12,11 +17,6 @@ helper: []     # boxed, comma-separated list of helpers' names, like ["Marlyn We
 contact: ["training@qcif.edu.au"]    # boxed, comma-separated list of contact email addresses for the host, lead instructor, or whoever else is handling questions, like ["marlyn.wescoff@example.org", "fran.bilas@example.org", "ruth.lichterman@example.org"]
 etherpad:             # optional: URL for the workshop Etherpad if there is one
 eventbrite: "171338517117"         # optional: alphanumeric key for Eventbrite registration, e.g., "1234567890AB" (if Eventbrite is being used)
-locations:
-  - venue: "Online"
-    address: "https://carpentries.zoom.us/j/FIXME"
-
-
 ---
 
 <!-- See instructions in the comments below for how to edit specific sections of this workshop template. -->
@@ -58,7 +58,7 @@ locations:
 -->
 
 <p>
-<a href="{{ www.carpentries.org }}">The Carpentries</a> is a community of practice centered around teaching foundational 
+<a href="{{ site.carpentries_site }}">The Carpentries</a> is a community of practice centered around teaching foundational 
   coding and data science skills to researchers worldwide. This Instructor Training 
   event is designed to prepare trainees to certify and participate as Carpentries 
   Instructors. However, much of our curriculum focuses on educational principles that 
@@ -80,14 +80,14 @@ not be learning:</p>
 * How to program in R or Python, use Git or SQL, or any of the other topics taught in  <a href="{{ site.dc_site }}">Data Carpentry</a>, 
   <a href="{{ site.lc_site }}">Library Carpentry</a>, or 
   <a href="{{ site.swc_site }}">Software Carpentry</a> workshops.
-* How to create your own lessons from scratch (although you will have a good start on the principles behind that sort of work if you are inspired to learn more).
+* How to create your own lessons from scratch. However, this Instructor Training serves as a good precursor to [The Carpentries Lesson Developer Training]({{ site.lessondev_training_site }}).
 
 
 <p>
 Instructor Training events are hands-on throughout: short lessons alternate 
 with individual and group practical exercises, including practice teaching sessions. 
 This Instructor Training event is the first step towards certification as a 
-Carpentries Instructor. For more details on the other 3 steps, see the <a href="{{ site.training_site }}/checkout">Checkout Instructions</a> page.
+Carpentries Instructor. For more details on the other 3 steps, see the <a href="{{ site.training_site }}/checkout.html">Checkout Instructions</a> page.
 For more information, see our <a href="{{ site.training_site }}">Instructor Training Curriculum</a>.
 </p>
 
@@ -96,7 +96,14 @@ For more information, see our <a href="{{ site.training_site }}">Instructor Trai
 All participants are required to abide by The Carpentries <a href="{{
 site.swc_site }}/conduct/">Code of Conduct</a>.
 
-
+{% assign begin_address = page.address | slice: 0, 4 | downcase  %}
+{% if page.address == "online" %}
+{% assign online = "true_private" %}
+{% elsif begin_address contains "http" %}
+{% assign online = "true_public" %}
+{% else %}
+{% assign online = "false" %}
+{% endif %}
 <!--
   LOCATION
 
@@ -107,54 +114,69 @@ site.swc_site }}/conduct/">Code of Conduct</a>.
   -->
 <h3 id="where">Where</h3>
 
-{% assign inperson = "false" %}
-{% for loc in page.locations %}
 
-{% capture online %}{{ loc.venue | downcase }}{% endcapture %}
-
-<h4>{{ loc.venue }}</h4>
-
-{% if online == "online" %}
-
-This is an online event and will be conducted using the Zoom video conferencing platform. No log-in is needed. 
-However, if you have not used Zoom before, please click the link a few minutes early as it may prompt you to 
-install the Zoom app or browser extension. You should have received a connection link in the same email that 
-directed you to this website. If you found this page by another means and did not receive the connection link, 
-please check your spam folder and email instructor.training@carpentries.org with your Trainers (contact details below) on cc.
-
-{% else %}
-{% assign inperson = "true" %}
-{{ loc.address }} {% if loc.latlng %} Get directions with
-    <a href="//www.openstreetmap.org/?mlat={{loc.latlng | replace:',','&mlon='}}&zoom=16">OpenStreetMap</a>
-    or
-    <a href="//maps.google.com/maps?q={{loc.latlng}}">Google Maps</a>. {% endif %}
-
+{% if online == "false" %}
+<p id="venue">
+  {{page.address}}.
+  {% if page.latitude and page.longitude %}
+  Get directions with
+  <a href="//www.openstreetmap.org/?mlat={{page.latitude}}&mlon={{page.longitude}}&zoom=16">OpenStreetMap</a>
+  or
+  <a href="//maps.google.com/maps?q={{page.latitude}},{{page.longitude}}">Google Maps</a>.
+  {% endif %}
+</p>
+{% elsif online == "true_public" %}
+<p id="venue">
+  Online at <a href="{{page.address}}">{{page.address}}</a>.
+  The training will be conducted using the Zoom video conferencing platform. No log-in is needed.
+  However, if you have not used Zoom before, please click the link a few minutes early as it may prompt you to
+  install the Zoom app or browser extension. You should have received a connection link in the same email that
+  directed you to this website. If you found this page by another means and did not receive the connection link,
+  please check your spam folder and email instructor.training@carpentries.org with your Trainers (contact details below) on cc.
+</p>
+{% elsif online == "true_private" %}
+<p id="venue">
+  This training will take place online.
+  The instructors will provide you with the information you will need to connect to this meeting.
+</p>
 {% endif %}
-{% endfor %}
-
-{% if inperson == "true" %}
 
 <h4 id="accessibility">Accessibility</h4>
 
-We are committed to making this workshop
+We are committed to making this training
 accessible to everybody.
-Workshop organisers have checked that:
+{% if online == "false" %}Organisers have checked that:
 
 <ul>
   <li>The room is wheelchair / scooter accessible.</li>
   <li>Accessible restrooms are available.</li>
 </ul>
-
-Materials will be provided in advance of the workshop. 
-If we can help make learning easier for you in any way by 
-providing additional support, accommodations, or assistance, 
-please get in touch (using contact details below) and we will attempt to provide them.
-
 {% endif %}
+
+Materials will be provided in advance of the event.
+
+We do not require participants to provide documentation of disabilities or disclose any unnecessary personal information. 
+However, we do want to help create an inclusive, accessible experience for all participants.
+We encourage you to share any information that would be helpful to make your Carpentries experience accessible.
+To request an accommodation for this training, please fill out the
+<a href="https://carpentries.typeform.com/to/B2OSYaD0">accommodation request form</a>.
+If you have questions or need assistance with the accommodation form please <a href="mailto:team@carpentries.org">email us</a>.
 
 <h3> Checkout: The Instructor Certification Process</h3>
 After the training event, we ask you to complete three follow-up tasks to become a certified Instructor. These requirements are detailed on our 
-  <a href="{{ site.training_site }}/checkout">Checkout Instructions</a> page and will be discussed at our training. 
+  <a href="{{ site.training_site }}/checkout.html">Checkout Instructions</a> page and will be discussed at our training. 
+
+{% if online == "false" %}
+<h3>What to Bring to an In-Person Event</h3>
+
+Participants should bring a laptop that is Internet connected and has a
+functioning browser. If you have it, a device for recording audio and video
+(mobile phones and laptops are OK) is useful as we
+are going to record one another teaching in pairs or threes. It does not have
+to be high-quality, but it should be good enough that you can understand what
+someone is saying.
+{% endif %}
+
   
 <h3>Attendance and Cancellation</h3>
 Trainees who miss more than 1 hour of the training may be marked absent. 
@@ -229,9 +251,8 @@ for more information.
 <hr/>
 
 <!--
-NOTE: The 2-day workshop schedule below is not up to date. However this space can be customized to reflect the unique schedule 
-of your workshop. If you would like it to display, adjust the times and titles, then delete the characters 
-above and below that serve to comment it out.
+NOTE: This space can be customized to reflect the unique schedule of your training. If you would like it to display,
+adjust the times and titles, then delete the characters above and below that serve to comment it out.
 -->
   
 
