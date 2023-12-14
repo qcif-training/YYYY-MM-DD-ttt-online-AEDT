@@ -152,19 +152,6 @@ please get in touch (using contact details below) and we will attempt to provide
 
 {% endif %}
 
-<h3>How to Prepare for Instructor Training</h3>
-  
-Before your training, please visit our Preparing for Instructor Training page for complete instructions. A brief summary of these instructions is as follows
-<ol>
-  <li>Complete our Pre-training Survey. You will receive a custom link for your event when you receive your connection information.</li>
-  <li>Select a lesson to use for teaching practice sessions and prepare a 3 minute segment, spending no more than 20-30 minutes to prepare.</li>
-  <li>Please read the following:</li>
-    <ul>
-      <li><a href="https://carpentries.github.io/instructor-training/files/papers/science-of-learning-2015.pdf">The Science of Learning</a></li>
-      <li><a href="https://carpentries.org/files/reports/2021%20Carpentries%20Annual%20Report_Final.pdf">The Carpentries Annual Report</a></li>
-    </ul> 
-</ol> 
-
 <h3> Checkout: The Instructor Certification Process</h3>
 After the training event, we ask you to complete three follow-up tasks to become a certified Instructor. These requirements are detailed on our 
   <a href="{{ site.training_site }}/checkout">Checkout Instructions</a> page and will be discussed at our training. 
@@ -207,12 +194,12 @@ for more information.
 <h2 id="preparation" name="preparation">Preparation</h2>
 
 <p>
-  Please read the following before the workshop begins:
+  Before your training, please visit our Preparing for Instructor Training page for complete instructions. A brief summary of these instructions is as follows:
 </p>
-<ol>
+<ul>
   <li><a href="{{ site.training_site }}/files/papers/science-of-learning-2015.pdf">The Science of Learning</a></li>
   <li><a href="https://carpentries.org/files/reports/Carpentries2020AnnualReport.pdf">The Carpentries 2020 Annual Report</a></li>
-</ol>
+</ul>
 <p>
   Please also read through <em>one</em> episode of one of The Carpentries lessons below   
   carefully, so that you can do some exercises based on it on the
@@ -225,6 +212,10 @@ for more information.
   <li><a href="{{ site.swc_site }}/lessons">Software Carpentry Lessons</a></li>
   </ul>
   
+<p>
+  Complete our <a href="{{ site.instructor_pre_survey }}{{ site.github.project_title }}">our pre-training survey</a>.
+</p>
+
 
 <hr/>
 
